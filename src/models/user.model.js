@@ -20,24 +20,15 @@ import bcrypt from "bcrypt"
                 lowercase: true,
                 trim: true,
             },
-            fullName:{
+            fullname:{
                 type: String,
                 required: true,
                 trim: true,
                 index: true
             },
-            name:{
-                type: String,
-                required: true,
-                trim: true,
-                index: true
-            },
-            avtar:{
+            avatar:{
                 type: String, // cloudinary ur;
                 required: true,
-            },
-            avtar:{
-                type: String, // cloudinary ur;
             },
             coverImage:{
                 type: String, // cloudinary ur;f
@@ -62,7 +53,7 @@ import bcrypt from "bcrypt"
 userSchema.pre("save", async function (next) {
     if(!this.isModified("password")) return next();
 
-    this.password = bcrypt.hash(this.password, 10)
+    this.password =await bcrypt.hash(this.password, 10)
     next()
 })
 
@@ -78,7 +69,7 @@ userSchema.methods.generateAcccessToken = function() {
             username: this.username,
             fullName: this.fullName
         },
-        process.env.ACCESS_TOKEN_SCERET,
+        process.env.ACCESS_TOKEN_SECRET,
         {
             expiresIn: process.env.ACCESSS_TOKEN_EXPIRY
         }
